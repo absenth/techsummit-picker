@@ -1,45 +1,41 @@
-'''
-This thing should have an array of locations.
-And randomly select one at a time.
-'''
-
+import discord
 import os
 import random
-import requests
+from discord.ext import commands
 from dotenv import load_dotenv
 
 
 def main():
-    spot = pickspot()
-    announcespot(spot)
+    load_dotenv()
+    token = os.getenv('DISCORD_TOKEN')
+    intents = discord.Intents.default()
+    intents.message_content = True
+    bot = commands.Bot(command_prefix='!', intents=intents)
+
+    @bot.command()
+    async def pickspot(ctx):
+        pick,website=spot()
+        await ctx.send(f'Picked {pick} as our next spot.  LINK: {website}')
+
+    bot.run(token)
+
+
+def spot():
+    return pickspot()
 
 
 def pickspot():
-    locations = [
-            'abgb', 'sabg', 'woodrows', 'docs',
-            'moontower', 'little darlin'
-            ]
-
-    return(random.choice(locations))
-
-def announcespot(spot):
-    load_dotenv()
-    webhook_url = os.getenv('DISCORD_WEBHOOK_URL')
-    username = 'Botsenth545'
-    avatar_url = os.getenv('DISCORD_AVATAR_URL')
-    content = f'I have picked the location: {spot}'
-    data = {
-            'content': content,
-            'username': username,
-            'avatar_url': avatar_url
+    locations = {
+            'ABGB': 'https://theabgb.com/',
+            'SABG': 'https://southaustinbeergarden.com/',
+            'Little Woodrows': 'https://littlewoodrows.com/locations/austin-southpark/',
+            "Doc's": "https://www.eatdrinkdocs.com/",
+            'Moontower': 'https://moontowersaloon.com/',
+            'The Little Darlin': 'https://www.thelittledarlin.com/'
             }
 
-    response = requests.post(webhook_url, json=data)
-
-    if response.status_code == 204:
-        print(f'I have posted the location: {spot} to the chat')
-    else:
-        print(f'I have failed to send the location {spot} - {response.status_code} {response.text}')
+    spot, website = random.choice(list(locations.items()))
+    return spot, website
 
 
 if __name__ == '__main__':
