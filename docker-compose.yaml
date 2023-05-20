@@ -1,0 +1,7 @@
+version: "3.4"
+services: 
+  techsummit-picker:
+    build:
+      context: .
+    container_name: techsummit-picker
+    image: absenth/techsummit-picker
