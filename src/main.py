@@ -8,20 +8,29 @@ from dotenv import load_dotenv
 def main():
     load_dotenv()
     token = os.getenv('DISCORD_TOKEN')
+
     intents = discord.Intents.default()
     intents.message_content = True
     bot = commands.Bot(command_prefix='!', intents=intents)
+    last = getlast()
 
     @bot.command()
     async def pickspot(ctx):
-        pick,website=spot()
-        await ctx.send(f'Picked {pick} as our next spot.  LINK: {website}')
+        pick,website = pickspot()
+        if pick == last:
+            pick,website = pickspot()
+        else:
+            await ctx.send(f'Picked {pick} as our next spot.  LINK: {website}')
+            setlast(pick)
+
+    @bot.command()
+    async def getpicks(ctx):
+        picks = getpicks()
+        await ctx.sent('These are the next five spots:')
+        await ctx.sent(f'{picks}')
+            
 
     bot.run(token)
-
-
-def spot():
-    return pickspot()
 
 
 def pickspot():
@@ -34,8 +43,8 @@ def pickspot():
             'The Little Darlin': 'https://www.thelittledarlin.com/'
             }
 
-    spot, website = random.choice(list(locations.items()))
-    return spot, website
+    pick, website = random.choice(list(locations.items()))
+    return pick,website
 
 
 if __name__ == '__main__':
