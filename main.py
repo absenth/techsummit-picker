@@ -1,7 +1,7 @@
 import discord
 import os
-import random
 from discord.ext import commands
+import random
 from dotenv import load_dotenv
 
 
@@ -31,7 +31,13 @@ def pickspot():
             'Little Woodrows': 'https://littlewoodrows.com/locations/austin-southpark/',
             "Doc's": "https://www.eatdrinkdocs.com/",
             'Moontower': 'https://moontowersaloon.com/',
-            'The Little Darlin': 'https://www.thelittledarlin.com/'
+            'Last Stand Brewery': 'https://laststandbrewery.com',
+            'The Little Darlin': 'https://www.thelittledarlin.com/',
+            'Aviator Pizza & Drafthouse': 'https://aviatorpizza.com',
+            'Fast Friends Brewery': 'https://fastfriendsbeer.com',
+            'Nomadic Beerworks': 'https://www.nomadicbeerworks.com',
+            'Progress Coffee & Beer': 'https://www.progresscoffeeroasting.com',
+            'Emerald Tavern': 'https://www.emeraldtaverngames.com'
             }
 
     spot, website = random.choice(list(locations.items()))
